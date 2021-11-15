@@ -31,6 +31,7 @@ def fastq_to_dataframe(filename):
         temp_list.append([fastq_read.id, str(fastq_read.seq)])
     df = pd.DataFrame(temp_list, columns=["id", "seq"])
     df["length"] = df.seq.str.len()
+
     def gc_content(seq):
         gc_content = round(((seq.count('C') + seq.count('G'))/len(seq)*100), 2)
         return gc_content
@@ -67,14 +68,14 @@ def plot_gc_content(df):
 
     x = np.arange(1, 100, 0.1)
     norm_fig = [norm_gc(i, df.gc_content.mean(), df.gc_content.std()) for i in x]
-    ax2 = ax.twinx() # the second y axis
+    ax2 = ax.twinx()  # the second y axis
     ax2.plot(x, norm_fig, label="Theoretical distribution", color="blue", lw=3)
     ax2.set_ylim(bottom=0)
     ax2.axes.get_yaxis().set_visible(False)
 
     ax.set_title("GC distribution over all sequences", size=20)
-    ax.legend(loc=2, bbox_to_anchor=(0.69,1.0))
-    ax2.legend(loc=2, bbox_to_anchor=(0.69,0.95))
+    ax.legend(loc=2, bbox_to_anchor=(0.69, 1.0))
+    ax2.legend(loc=2, bbox_to_anchor=(0.69, 0.95))
 
     fig.savefig(os.path.join(args.outdir, "per_sequence_gc_content.png"), format='png', dpi=600)
 
@@ -138,7 +139,7 @@ def plot_sequence_content(df):
     ax.legend(loc='upper right', labelcolor='linecolor')
 
     ax.set_xlabel('Position in read (bp)')
-    ax.set_title("Sequence content across all bases", size = 20)
+    ax.set_title("Sequence content across all bases", size=20)
 
     fig.savefig(os.path.join(args.outdir, "per_base_sequence_content.png"), format='png', dpi=600)
 
@@ -177,3 +178,4 @@ def main():
     plot_n_content(df)
 
 main()
+
