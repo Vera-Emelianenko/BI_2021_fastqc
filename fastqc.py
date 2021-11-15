@@ -177,5 +177,5 @@ def main():
     plot_sequence_content(df)
     plot_n_content(df)
 
-main()
 
+main()
