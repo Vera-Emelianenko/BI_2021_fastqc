@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-#def get_seq_quality(input):
 def get_seq_quality():
     #with open(input) as input_file:
         #input_fastq_list = input_file.readlines()
@@ -27,20 +26,45 @@ def get_mean_quality(input = get_seq_quality()):
     return(mean_quality)
 print(get_mean_quality())
 
-#def per_sequence_quality_score():
-    #qualities = get_mean_quality()
-    #sns.histplot(qualities, bins=1, binrange=(10,99), fill=False, color ='red')
-    #plt.show()
+def per_sequence_quality_score():
+    qualities = get_mean_quality()
+    qual_dict = dict()
+    qual_dict[1] = qualities
+    df = pd.DataFrame(qual_dict)
+    print(df)
+    df.value_counts().sort_index().plot()
+    plt.show()
 #per_sequence_quality_score()
 
 def get_quality_base():
     input = get_seq_quality()
     bases = [[] for j in range(0, len(input[1]))]
+    one_col_length = len(input)*len(input[1])
+    bases_one_col = [i for i in range(1, one_col_length+1)]
     for i in range(0, len(input)):
         for j in range(0, len(input[1])):
             bases[j].append(input[i][j])
+            bases_one_col.append(input[i][j])
     return(bases)
 print(get_quality_base())
+
+def get_quality_base_one_col():
+    input = get_seq_quality()
+    bases_one_col = {"quality": [], "read_number": [], "position": []}
+    for i in range(0, len(input)):
+        for j in range(0, len(input[i])):
+            bases_one_col["quality"].append(input[i][j])
+            bases_one_col["read_number"].append(i)
+            bases_one_col["position"].append(j)
+    return(bases_one_col)
+print(get_quality_base_one_col())
+
+def per_base_sequence_quality():
+    df = pd.DataFrame(get_quality_base_one_col())
+    print(df)
+    sns.boxplot(x = "position", y = "quality", data = df)
+    plt.show()
+per_base_sequence_quality()
 
 def get_tile():
     input_fastq_list = ['@SIM:1:FCX:1:1:6329:1045', 'ATGCTGC', '+', '@AB!CDA@', '@@SIM:1:FCX:1:1:6329:1045:GATTACT', 'ATGCGGC', '+', 
@@ -85,4 +109,4 @@ def per_tile_quality():
     sns.heatmap(df)
     sns.color_palette("coolwarm", as_cmap=True)
     plt.show()
-per_tile_quality()
+#per_tile_quality()
