@@ -6,11 +6,13 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
-from time import time # for testing purposes only 
+# for testing purposes only
+from time import time
 
 
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
-parser.add_argument("-o", "--outdir", help="Specify directory in which output has to be created,  default ./", default=".")
+parser.add_argument("-o", "--outdir", 
+                    help="Specify directory in which output has to be created,  default ./", default=".")
 parser.add_argument("-i", "--input", help="Reads data in fastq format")
 args, unknown = parser.parse_known_args()
 
@@ -26,7 +28,7 @@ def fastq_to_dataframe(filename):
         return("The programm takes only fastq files! Try again.")
 
     # create a temporary list with lists of two elements: id and sequence
-    # than create a dataframe and add the column "length"
+    # then create a dataframe and add the column "length"
 
     temp_list = []
     for fastq_read in fastq_parser:
@@ -182,6 +184,8 @@ def main():
     seconds_elapsed = end_time - start_time
     hours, rest = divmod(seconds_elapsed, 3600)
     minutes, seconds = divmod(rest, 60)
-    print(f'Analysis complete for {args.input} in {hours} hours {minutes} minutes {seconds} seconds. Results written to "{args.outdir}/"')
+    print(f'''Analysis complete for {args.input} in {hours} hours {minutes}
+          minutes {seconds} seconds. Results written to "{args.outdir}/"''')
+
 
 main()
