@@ -11,7 +11,7 @@ from time import time
 
 
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
-parser.add_argument("-o", "--outdir", 
+parser.add_argument("-o", "--outdir",
                     help="Specify directory in which output has to be created,  default ./", default=".")
 parser.add_argument("-i", "--input", help="Reads data in fastq format")
 args, unknown = parser.parse_known_args()
