@@ -6,10 +6,12 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
+from time import time # for testing purposes only 
+
 
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
-parser.add_argument("-o", "--outdir", help="Specify directory in which output has to be created.", default=".")
-parser.add_argument("-i", "--input", help="Reads data in fastq format.")
+parser.add_argument("-o", "--outdir", help="Specify directory in which output has to be created,  default ./", default=".")
+parser.add_argument("-i", "--input", help="Reads data in fastq format")
 args, unknown = parser.parse_known_args()
 
 
@@ -171,11 +173,15 @@ def plot_n_content(df):
 
 
 def main():
-
+    start_time = time()
     df = fastq_to_dataframe(args.input)
     plot_gc_content(df)
     plot_sequence_content(df)
     plot_n_content(df)
-
+    end_time = time()
+    seconds_elapsed = end_time - start_time
+    hours, rest = divmod(seconds_elapsed, 3600)
+    minutes, seconds = divmod(rest, 60)
+    print(f'Analysis complete for {args.input} in {hours} hours {minutes} minutes {seconds} seconds. Results written to "{args.outdir}/"')
 
 main()
