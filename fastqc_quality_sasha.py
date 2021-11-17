@@ -10,7 +10,7 @@ internal_test += ['@SIM:1:FCX:1:3:6329:1045:GATTACT', 'AAACTGC', '+', '@A>>CDA@'
 internal_test += ['@SIM:1:FCX:1:3:6329:1045:GATTACT', 'AAACTGC', '+', '@A>>CDA@']
 
 
-# The fastq lines corresponding to quality are extracted, decoded to scores and 
+# The fastq lines corresponding to quality are extracted, decoded to scores and
 # put to list with lists each of which corresponds to 1 read
 def get_seq_quality(input_fastq_list=internal_test):
     seq_quality = []
@@ -58,7 +58,6 @@ per_sequence_quality_score()
 def get_quality_base():
     input = get_seq_quality()
     bases = [[] for j in range(0, len(input[1]))]
-    one_col_length = len(input)*len(input[1])
     for i in range(0, len(input)):
         for j in range(0, len(input[1])):
             bases[j].append(input[i][j])
@@ -77,12 +76,11 @@ def get_quality_base_one_col():
     return(bases_one_col)
 
 
-# Per base quality is plotted, line representing of per base qualities (qual_means) is plotted
+# Per base quality is plotted, line representing of per base qualities (qual_mean) is plotted
 def per_base_sequence_quality():
     df = pd.DataFrame(get_quality_base_one_col(), columns=["quality", "read_number", "position"])
     sns.set_style("whitegrid")
-    qual_means =pd.DataFrame(df.groupby('position').mean().reset_index(), columns=["quality", "read_number", "position"])
-    print(qual_means)
+    qual_mean = pd.DataFrame(df.groupby('position').mean().reset_index(), columns=["quality", "read_number", "position"])
     per_base_plot = sns.boxplot(x="position", y="quality", data=df)
     # Areas of background color are defined depending on y axis values
     per_base_plot.axhspan(0, 20, color='#EF9A9A', alpha=0.4)
@@ -90,12 +88,13 @@ def per_base_sequence_quality():
     per_base_plot.axhspan(28, 34, color='#388E3C', alpha=0.4)
 
     per_base_plot.set(title='Quality scores across all bases (Illumina>v1.3 encoding)', xlabel='Position in read (bp)')
-    plt.plot(qual_means["quality"])
+    plt.plot(qual_mean["quality"])
     plt.ylim(0, 35)
     plt.show()
 
 
 per_base_sequence_quality()
+
 
 # The tile id is extracted as 5th column in 1st line for each fastq entry
 def get_tile(input_fastq_list=internal_test):
@@ -115,7 +114,7 @@ def base_quality_per_tile():
     for i in tiles:
         tiles_count[i] = tiles.count(i)
         if tiles_dict_quality[i] is None:
-           tiles_dict_quality[i] = seq[tiles.index(i)]
+            tiles_dict_quality[i] = seq[tiles.index(i)]
         else:
             tiles_dict_quality[i] = [sum(x) for x in zip(tiles_dict_quality[i], seq[tiles.index(i)])]
     for key in tiles_dict_quality:
