@@ -54,6 +54,7 @@ def per_sequence_quality_score():
 
 per_sequence_quality_score()
 
+
 # Per base quality is extracted, put to list with lists for each read position (bases)
 def get_quality_base():
     input = get_seq_quality()
