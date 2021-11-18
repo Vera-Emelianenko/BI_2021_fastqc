@@ -3,21 +3,15 @@ import csv
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-from Bio import SeqIO
-
-input_file = "C:/Users/rusla/OneDrive/Desktop/1-5_S_F.fastq"
-output_dir = "C:/Users/rusla/OneDrive/Desktop/seq/"
 
 
-def fastq_overseq(input_file):
+def fastq_overseq():
 
     ######
     # Read input file
     ######
 
-    list_seq = []
-    for record in SeqIO.parse(input_file, "fastq"):
-        list_seq.append(record.seq)
+    list_seq = fastq_list
     dic_seq = collections.Counter(list_seq)
     total_seq = len(list_seq)
     uniq_seq = len(dic_seq)
@@ -61,7 +55,7 @@ def fastq_overseq(input_file):
               str(round(uniq_seq / float(total_seq) * 100, 2)) + ' %')
     plt.legend()
     plt.show()
-    plt.savefig(output_dir + 'Sequence_duplication_levels.png')
+    plt.savefig(args.outdir + 'Sequence_duplication_levels.png')
     fig_1
 
     ######
@@ -74,7 +68,7 @@ def fastq_overseq(input_file):
         trunc_seq.append(t_seq)
     dic_trunc_seq = collections.Counter(trunc_seq)
 
-    with open(output_dir + 'Overrepresented_sequences.tsv', 'w',
+    with open(args.outdir + 'Overrepresented_sequences.tsv', 'w',
               newline='') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
         tsv_writer.writerow(['Sequence', 'Count', 'Percentage'])
@@ -115,8 +109,8 @@ def fastq_overseq(input_file):
     plt.title('% Adapter')
     plt.legend()
     plt.show()
-    plt.savefig(output_dir + 'Adapter_content.png')
+    plt.savefig(args.outdir + 'Adapter_content.png')
     fig_2
 
 
-fastq_overseq(input_file)
+fastq_overseq()
