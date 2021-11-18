@@ -3,6 +3,7 @@ import csv
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+from Bio import SeqIO
 
 
 def fastq_overseq():
@@ -11,7 +12,9 @@ def fastq_overseq():
     # Read input file
     ######
 
-    list_seq = fastq_list
+    list_seq = []
+    for record in SeqIO.parse(input_file, "fastq"):
+        list_seq.append(record.seq)
     dic_seq = collections.Counter(list_seq)
     total_seq = len(list_seq)
     uniq_seq = len(dic_seq)
