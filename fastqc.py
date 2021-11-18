@@ -321,6 +321,6 @@ def main():
         per_tile_quality(fastq_list)
     except IndexError:
         print('No tile info provided in fastq file, unable to generate per tile plot')
-    fastq_overseq(fastq_list)
+    fastq_overseq(args.input)
 
 main()
