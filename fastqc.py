@@ -431,7 +431,7 @@ def fastq_overseq(input_file):
         tsv_writer = csv.writer(out_file, delimiter='\t')
         tsv_writer.writerow(['Sequence', 'Count', 'Percentage'])
         for key, values in dic_trunc_seq.items():
-            if values * 100 / float(total_seq) >= 0.1 and values > 1::
+            if values * 100 / float(total_seq) >= 0.1 and values > 1:
                 tsv_writer.writerow([key, values,
                                      values * 100 / float(total_seq)])
 
