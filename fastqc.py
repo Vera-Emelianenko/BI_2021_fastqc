@@ -4,10 +4,15 @@ from Bio import SeqIO
 import pandas as pd
 import math
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.ticker import AutoMinorLocator
-# for testing purposes only
+
+import matplotlib.patches as patches
+import matplotlib.ticker as plticker
+from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MultipleLocator)
+import seaborn as sns
 from time import time
+
 
 
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
@@ -174,6 +179,141 @@ def plot_n_content(df):
     fig.savefig(os.path.join(args.outdir, "per_base_n_content.png"), format='png', dpi=600)
 
 
+
+# creating small internal test
+
+internal_test = ['@SIM:1:FCX:1:1:6329:1045:GATTACT', 'ATGCTGC', '+', '@AB!CDA@']
+internal_test += ['@@SIM:1:FCX:1:1:6329:1045:GATTACT', 'ATGCGGC', '+', '@ABDC>A@']
+internal_test += ['@SIM:1:FCX:1:3:6329:1045:GATTACT', 'AAACTGC', '+', '@A>>CDA@']
+internal_test += ['@SIM:1:FCX:1:3:6329:1045:GATTACT', 'AAACTGC', '+', '@A>>CDA@']
+
+
+# The fastq lines corresponding to quality are extracted, decoded to scores and
+# put to list with lists each of which corresponds to 1 read
+def get_seq_quality(input_fastq_list):
+    seq_quality = []
+    for i in range(0, len(input_fastq_list)):
+        if (i+1) % 4 == 0:
+            decoded = []
+            for el in input_fastq_list[i]:
+                decoded.append(ord(el)-33)
+            seq_quality.append(decoded)
+    return(seq_quality)
+
+
+# Mean quality per read is calculated and put to list
+def get_mean_quality(input_fastq_list):
+    input = get_seq_quality(input_fastq_list)
+    mean_quality = []
+    for i in input:
+        mean_quality.append(sum(i) / len(i))
+    return(mean_quality)
+
+
+# Number of quality per read (mean) values occurences is calculated, put to data frame and plotted
+def per_sequence_quality_score(input_fastq_list):
+    import math
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    qualities = get_mean_quality(input_fastq_list)
+    df = pd.DataFrame({"quality": qualities}, columns=["quality"])
+    quality_counts = pd.DataFrame(df["quality"].value_counts().sort_index(), columns=["quality"])
+    fg, ax = plt.subplots()
+    ax.plot(quality_counts, label="Average quality per read")
+    ax.xaxis.set_major_locator(AutoLocator())
+    ax.yaxis.set_major_locator(AutoLocator())
+    plt.title('Quality score distribution over all sequences')
+    plt.xlabel("Quality")
+    plt.legend(loc='upper right')
+    
+    plt.savefig(os.path.join(args.outdir, "per_sequence_quality_score.png"), format='png', dpi=1000)
+
+
+# Per base quality is extracted, put to list with lists for each read position (bases)
+def get_quality_base(input_fastq_list):
+    input = get_seq_quality(input_fastq_list)
+    bases = [[] for j in range(0, len(input[1]))]
+    for i in range(0, len(input)):
+        for j in range(0, len(input[1])):
+            bases[j].append(input[i][j])
+    return(bases)
+
+
+# Per base quality is extracted and put to long-format column dictionary (bases_one_col)
+def get_quality_base_one_col(input_fastq_list):
+    input = get_seq_quality(input_fastq_list)
+    bases_one_col = {"quality": [], "read_number": [], "position": []}
+    for i in range(0, len(input)):
+        for j in range(0, len(input[i])):
+            bases_one_col["quality"].append(input[i][j])
+            bases_one_col["read_number"].append(i)
+            bases_one_col["position"].append(j + 1)
+    return(bases_one_col)
+
+
+# Per base quality is plotted, line representing of per base qualities (qual_mean) is plotted
+def per_base_sequence_quality(input_fastq_list):
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    df = pd.DataFrame(get_quality_base_one_col(), columns=["quality", "position"])
+    sns.set_style("whitegrid")
+    qual_mean = pd.DataFrame(df.groupby('position').mean().reset_index(), columns=["quality", "position"])
+    per_base_plot = sns.boxplot(x="position", y="quality", data=df, hue = "position", showfliers = False, width=80)
+    # Areas of background color are defined depending on y axis values
+    per_base_plot.axhspan(0, 20, color='#EF9A9A', alpha=0.4)
+    per_base_plot.axhspan(20, 28, color=(0.9, 1, 0.5, 1), alpha=0.4)
+    per_base_plot.axhspan(28, 34, color='#388E3C', alpha=0.4)
+
+    per_base_plot.set(title='Quality scores across all bases (Illumina>v1.3 encoding)', xlabel='Position in read (bp)')
+    per_base_plot.xaxis.set_major_locator(AutoLocator())
+    per_base_plot.get_legend().remove()
+    plt.plot(qual_mean["quality"])
+    plt.ylim(0, 40)
+    plt.xlim(0, 40)
+    
+    plt.savefig(os.path.join(args.outdir, "per_base_sequence_quality.png"), format='png', dpi=1000)
+
+
+# The tile id is extracted as 5th column in 1st line for each fastq entry
+def get_tile(input_fastq_list):
+    tiles = []
+    for i in range(0, len(input_fastq_list)):
+        if (i) % 4 == 0:
+            tiles.append(input_fastq_list[i].split(':')[4])
+    return(tiles)
+
+
+# Per tile quality is extracted, quality values [items] are put to dictionary according to tiles ids [keys]
+def base_quality_per_tile(input_fastq_list):
+    tiles = get_tile(input_fastq_list)
+    tiles_dict_quality = dict.fromkeys(tiles)
+    tiles_count = dict.fromkeys(tiles)
+    seq = get_seq_quality(input_fastq_list)
+    for i in tiles:
+        tiles_count[i] = tiles.count(i)
+        if tiles_dict_quality[i] is None:
+            tiles_dict_quality[i] = seq[tiles.index(i)]
+        else:
+            tiles_dict_quality[i] = [sum(x) for x in zip(tiles_dict_quality[i], seq[tiles.index(i)])]
+    for key in tiles_dict_quality:
+        for item in tiles_dict_quality[key]:
+            ind = tiles_dict_quality[key].index(item)
+            item = item/(tiles_count[key])
+            tiles_dict_quality[key][ind] = item
+    return(tiles_dict_quality)
+
+
+# Per tile quality is plotted as heatmap
+def per_tile_quality(input_fastq_list):
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    df = pd.DataFrame.from_dict(base_quality_per_tile(input_fastq_list), orient='index')
+    df = df.set_axis([i for i in range(1, len(df.columns)+1)], axis='columns')
+    df = df.reindex(index=df.index[::-1])
+    per_tile_plot = sns.heatmap(df, cmap="RdBu")
+    per_tile_plot.xaxis.set_major_locator(AutoLocator())
+    per_tile_plot.set(title='Quality per tile', xlabel='Position in read (bp)', ylabel='Tile')
+    
+    plt.savefig(os.path.join(args.outdir, "per_tile_quality.png"), format='png', dpi=1000)
+
+
 def main():
     start_time = time()
     df = fastq_to_dataframe(args.input)
@@ -186,6 +326,18 @@ def main():
     minutes, seconds = divmod(rest, 60)
     print(f'''Analysis complete for {args.input} in {hours} hours {minutes}
           minutes {seconds} seconds. Results written to "{args.outdir}/"''')
+
+    with open(args.input) as input_fastq:
+        fastq_list = input_fastq.read().splitlines()
+    get_seq_quality(fastq_list)
+    per_sequence_quality_score(fastq_list)
+    per_base_sequence_quality(fastq_list)
+    try:
+        get_tile(fastq_list)
+        per_tile_quality(fastq_list)
+    except IndexError:
+        print('No tile info provided in fastq file, unable to generate per tile plot')
+    fastq_overseq(args.input)
 
 
 main()
