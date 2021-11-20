@@ -4,10 +4,10 @@ This is python project for python course in [Bioinnformatics Institute](https://
 
 ## Contributors
 
-Alexandra Kolodyazhnaya @alvlako wrote functions to plot per base and per tile quality score.
-Anastasiia Rusanova @rusanovaA wrote functions to generate 
-Anna Kapitonova @anna-kapitonova wrote arguments parsing, main function, functions to plot GC content, sequence length distribution, per base sequence quality and per sequence GC content
-Vera Emelianenko @Vera-Emelianenko wrote function for calculating basic statistics, tested and prettified the code (printing time, checking filepaths), wrote README. 
+- Alexandra Kolodyazhnaya [@alvlako](https://github.com/alvlako) wrote functions to plot per base and per tile quality score.
+- Anastasiia Rusanova [@rusanovaA](https://github.com/rusanovaA) wrote functions to generate 
+- Anna Kapitonova [@anna-kapitonova](https://github.com/anna-kapitonova) wrote arguments parsing, main function, functions to plot GC content, sequence length distribution, per base sequence quality and per sequence GC content
+- Vera Emelianenko [@Vera-Emelianenko](https://github.com/Vera-Emelianenko) wrote function for calculating basic statistics, tested and prettified the code (printing time, checking filepaths), wrote README. 
 
 ## Installation
 
@@ -85,10 +85,3 @@ python fastqc.py -i input_file_dir/input_file.fq -o output_file_dir
     
 `-o <output_dir>` (or `--outdir <output_dir>`)
     Specify the output directory. The current directory is default `"./"`.
-
-## Output files 
-
-
-
-## Operating system and software versions
-
