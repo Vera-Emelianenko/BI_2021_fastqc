@@ -67,8 +67,14 @@ def plot_gc_content(df):
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    ax.hist(df.gc_content, bins=40, color="red", histtype="step", lw=2, label="GC count per read")
+    gc = np.array(df.gc_content)
+    hist, bin_edges = np.histogram(gc, 40)
+    bin_edges = bin_edges[1:]
+    peaks, _ = find_peaks(hist)
+
+    ax.plot(bin_edges, hist, color="red", lw=2, label="GC count per read")
     ax.set_xlim((0, 100))
+    ax.set_ylim(bottom=0)
     ax.set_xlabel("Mean GC content (%)", fontsize="16")
     ax.tick_params(axis='y', labelcolor="black")
     ax.xaxis.set_minor_locator(AutoMinorLocator(4))
@@ -79,7 +85,7 @@ def plot_gc_content(df):
     x = np.arange(1, 100, 0.1)
     norm_fig = [norm_gc(i, df.gc_content.mean(), df.gc_content.std()) for i in x]
     ax2 = ax.twinx()  # the second y axis
-    ax2.plot(x, norm_fig, label="Theoretical distribution", color="blue", lw=3)
+    ax2.plot(x, norm_fig, label="Theoretical distribution", color="blue", lw=2)
     ax2.set_ylim(bottom=0)
     ax2.axes.get_yaxis().set_visible(False)
 
@@ -87,7 +93,7 @@ def plot_gc_content(df):
     ax.legend(loc=2, bbox_to_anchor=(0.69, 1.0))
     ax2.legend(loc=2, bbox_to_anchor=(0.69, 0.95))
 
-    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_per_sequence_gc_content.png"),
+    fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_sequence_gc_content.png"),
                 format='png', dpi=300)
 
 
@@ -152,7 +158,7 @@ def plot_sequence_content(df):
     ax.set_xlabel('Position in read (bp)')
     ax.set_title("Sequence content across all bases", size=20)
 
-    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_per_base_sequence_content.png"),
+    fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_content.png"),
                 format='png', dpi=300)
 
 
@@ -179,7 +185,7 @@ def plot_n_content(df):
     ax.set_xlabel('Position in read (bp)')
     ax.set_title("N content across all bases", size=20)
 
-    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_per_base_n_content.png"),
+    fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_n_content.png"),
                 format='png', dpi=300)
 
 
@@ -192,7 +198,7 @@ def plot_length_distribution(df):
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    m1 = min(df.length)
+    m1 = 30
     m2 = max(df.length)
 
     ax.hist(df.length, bins=np.arange(m1, m2+1)-0.5, rwidth=0.5, color="red", lw=2, label="Sequence length")
@@ -207,7 +213,7 @@ def plot_length_distribution(df):
     ax.set_title("Distribution of sequence lengths over all sequences", size=20)
     ax.legend(loc=2)
 
-    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_seq_length_distribution.png"),
+    fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_seq_length_distribution.png"),
                 format='png', dpi=300)
 
 
@@ -256,7 +262,8 @@ def per_sequence_quality_score(input_fastq_list):
     plt.xlabel("Quality")
     plt.legend(loc='upper right')
     
-    plt.savefig(os.path.join(args.outdir, "per_sequence_quality_score.png"), format='png', dpi=1000)
+    plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_sequence_quality_score.png"),
+                format='png', dpi=300)
 
 
 # Per base quality is extracted, put to list with lists for each read position (bases)
@@ -287,7 +294,7 @@ def per_base_sequence_quality(input_fastq_list):
     df = pd.DataFrame(get_quality_base_one_col(input_fastq_list), columns=["quality", "position"])
     sns.set_style("whitegrid")
     qual_mean = pd.DataFrame(df.groupby('position').mean().reset_index(), columns=["quality", "position"])
-    per_base_plot = sns.boxplot(x="position", y="quality", data=df, hue = "position", showfliers = False, width=80)
+    per_base_plot = sns.boxplot(x="position", y="quality", data=df, hue="position", showfliers=False, width=80)
     # Areas of background color are defined depending on y axis values
     per_base_plot.axhspan(0, 20, color='#EF9A9A', alpha=0.4)
     per_base_plot.axhspan(20, 28, color=(0.9, 1, 0.5, 1), alpha=0.4)
@@ -300,7 +307,8 @@ def per_base_sequence_quality(input_fastq_list):
     plt.ylim(0, 40)
     plt.xlim(0, 40)
     
-    plt.savefig(os.path.join(args.outdir, "per_base_sequence_quality.png"), format='png', dpi=1000)
+    plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_quality.png"),
+                format='png', dpi=300)
 
 
 # The tile id is extracted as 5th column in 1st line for each fastq entry
@@ -342,7 +350,8 @@ def per_tile_quality(input_fastq_list):
     per_tile_plot.xaxis.set_major_locator(AutoLocator())
     per_tile_plot.set(title='Quality per tile', xlabel='Position in read (bp)', ylabel='Tile')
     
-    plt.savefig(os.path.join(args.outdir, "per_tile_quality.png"), format='png', dpi=1000)
+    plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_tile_quality.png"),
+                format='png', dpi=300)
 
 
 def fastq_overseq(input_file):
@@ -397,7 +406,8 @@ def fastq_overseq(input_file):
               str(round(uniq_seq / float(total_seq) * 100, 2)) + ' %')
     plt.legend()
     plt.show()
-    plt.savefig(args.outdir + 'Sequence_duplication_levels.png')
+    plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_sequence_duplication_levels.png"),
+                format='png', dpi=300)
     fig_1
 
     ######
@@ -451,7 +461,8 @@ def fastq_overseq(input_file):
     plt.title('% Adapter')
     plt.legend()
     plt.show()
-    plt.savefig(args.outdir + 'Adapter_content.png')
+    plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + '_adapter_content.png'),
+                format='png', dpi=300)
     fig_2
 
 def main():
