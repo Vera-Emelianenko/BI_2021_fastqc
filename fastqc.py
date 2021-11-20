@@ -17,7 +17,8 @@ import seaborn as sns
 from time import time
 from scipy.signal import find_peaks as find_peaks
 
-
+if len(sys.argv) == 1: 
+    sys.exit("No arguments provided. Print python fastqc.py -h to see help message")
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
 parser.add_argument("-o", "--outdir",
                     help="Specify directory in which output has to be created,  default ./", default=".")
@@ -25,7 +26,6 @@ parser.add_argument("-i", "--input", help="Reads data in fastq format")
 args, unknown = parser.parse_known_args()
 
 def check_path(input_path, output_path): 
-    
     if not os.path.exists(input_path):
         sys.exit("Input file not found")
     elif not os.path.exists(output_path):
@@ -474,8 +474,38 @@ def print_end_time(start_time):
     seconds_elapsed = end_time - start_time
     hours, rest = divmod(seconds_elapsed, 3600)
     minutes, seconds = divmod(rest, 60)
-    print(f'''Analysis complete for {args.input} in {hours} hours {minutes}
+    print(f'''Analysis completed for {args.input} in {hours} hours {minutes}
           minutes {seconds} seconds. Results written to "{args.outdir}/"''')
+
+def print_base_statistics(df, filename, output_dir):
+
+    '''writes down a .tsv file with basic statistics'''
+
+    average_gc_content = str(round(df.gc_content.mean(), 1))
+    min_length = str(df.length.min())
+    max_length = str(df.length.max())
+    mean_length = str(round(df.length.mean(),1))
+    if max_length==min_length: 
+        sequence_length_range = max_length
+    else: 
+        sequence_length_range = min_length + '-' + max_length
+    number_of_sequences = str(len(df))
+    basic_statistics_dict = {
+        'Filename':filename,
+        'Total Sequences':number_of_sequences, 
+        'Mean sequence length':mean_length,
+        'Sequence length range':sequence_length_range,
+        'Average GC-content, %':average_gc_content
+    }
+
+    with open(os.path.join(output_dir, os.path.basename(filename)[:-6] + '_basic_statistics.tsv'), 'w',
+              newline='') as out_file:
+        tsv_writer = csv.writer(out_file, delimiter='\t')
+        tsv_writer.writerow(['Measure', 'Value'])
+        for keys, values in basic_statistics_dict.items():
+            tsv_writer.writerow([keys, values])
+    return None
+    
 
 def main():
     start_time = time()
@@ -497,6 +527,7 @@ def main():
     except IndexError:
         print('No tile info provided in fastq file, unable to generate per tile plot')
     fastq_overseq(args.input)
+    print_base_statistics(df, args.input, args.outdir)
     print_end_time(start_time)
 
 main()
