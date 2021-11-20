@@ -477,7 +477,7 @@ def print_end_time(start_time):
     hours, rest = divmod(seconds_elapsed, 3600)
     minutes, seconds = divmod(rest, 60)
     print(f'''Analysis completed for {args.input} in {hours} hours {minutes}
-          minutes {seconds} seconds. Results written to "{args.outdir}/"''')
+          minutes {seconds} seconds. Results written to {args.outdir}/''')
 
 def print_base_statistics(df, input_file, output_dir):
 
