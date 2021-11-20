@@ -1,10 +1,13 @@
 # BI_2021_fastqc
 
-This is python project for python course in [Bioinnformatics Institute](https://bioinf.me/en). The fastqc.py is a script for sequencing reads quality control. It provides the similar metrics and graphs as the widely used FastQC tool from Babraham Institute. 
+This is python project for python course in [Bioinnformatics Institute](https://bioinf.me/en). The fastqc.py is a script for sequencing reads quality control. It provides the similar metrics and graphs as the widely used FastQC tool from Babraham Institute, in particular: ефиду ща basic statistics (number of reads, average length), table of overrepresented sequences, plots of adapter content, per base n content, per base sequence content, per base sequence quality, per sequence quality score, sequence length distribution, per sequence GC content and sequence duplication levels. The program assumes quality encoding to be in Sanger/Illumina>1.3 (phred33) format. 
 
 ## Contributors
 
-
+Alexandra Kolodyazhnaya @alvlako wrote functions to plot per base and per tile quality score.
+Anastasiia Rusanova @rusanovaA wrote functions to generate 
+Anna Kapitonova @anna-kapitonova wrote arguments parsing, main function, functions to plot GC content, sequence length distribution, per base sequence quality and per sequence GC content
+Vera Emelianenko @Vera-Emelianenko wrote function for calculating basic statistics, tested and prettified the code (printing time, checking filepaths), wrote README. 
 
 ## Installation
 
@@ -84,6 +87,7 @@ python fastqc.py -i input_file_dir/input_file.fq -o output_file_dir
     Specify the output directory. The current directory is default `"./"`.
 
 ## Output files 
+
 
 
 ## Operating system and software versions
