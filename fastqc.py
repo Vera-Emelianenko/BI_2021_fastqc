@@ -283,7 +283,7 @@ def get_quality_base_one_col(input_fastq_list):
 # Per base quality is plotted, line representing of per base qualities (qual_mean) is plotted
 def per_base_sequence_quality(input_fastq_list):
     mpl.rcParams.update(mpl.rcParamsDefault)
-    df = pd.DataFrame(get_quality_base_one_col(), columns=["quality", "position"])
+    df = pd.DataFrame(get_quality_base_one_col(input_fastq_list), columns=["quality", "position"])
     sns.set_style("whitegrid")
     qual_mean = pd.DataFrame(df.groupby('position').mean().reset_index(), columns=["quality", "position"])
     per_base_plot = sns.boxplot(x="position", y="quality", data=df, hue = "position", showfliers = False, width=80)
