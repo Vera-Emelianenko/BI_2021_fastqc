@@ -14,10 +14,6 @@ The archive with the content of the project can be downloaded via visual interfa
 
 `gunzip BI_2021_fastqc.zip`
 
-Then the fastqc.py file can be run.
-
-`python3 fastqc.py`
-
 #### Via git clone
 
 `git clone https://github.com/Vera-Emelianenko/BI_2021_fastqc.git`
@@ -37,6 +33,20 @@ In case you decided to run it in Python2, we can not quarantee proper script wor
 Please, visit requirements.txt file to know which modules need to be installed.
 
 ## Usage
+
+To run fastqc from the command line, type
+
+``` bash
+python fastqc.py [options]
+```
+
+### Basic options
+
+`-i <path_to_file>` (or `--input <path_to_file>`)
+    Reads data in fastq format.
+    
+`-o <output_dir>` (or `--outdir <output_dir>`)
+    Specify the output directory. The current directory is default `"./"`.
 
 ## Operating system and software versions
 
