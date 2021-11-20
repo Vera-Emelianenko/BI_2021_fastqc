@@ -70,7 +70,7 @@ def plot_gc_content(df):
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    gc = np.array(df.gc_content)
+    gc = np.array(df.gc_content)-0.025
     hist, bin_edges = np.histogram(gc, 40)
     bin_edges = bin_edges[1:]
     peaks, _ = find_peaks(hist)
@@ -80,8 +80,9 @@ def plot_gc_content(df):
     ax.set_ylim(bottom=0)
     ax.set_xlabel("Mean GC content (%)", fontsize="16")
     ax.tick_params(axis='y', labelcolor="black")
-    ax.xaxis.set_minor_locator(AutoMinorLocator(4))
-    ax.yaxis.set_minor_locator(AutoMinorLocator(4))
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.xaxis.set_minor_locator(AutoMinorLocator(5))
+    ax.yaxis.set_minor_locator(AutoMinorLocator(5))
     ax.grid(which='major', color='#CCCCCC', linestyle='--')
     ax.grid(which='minor', color='#CCCCCC', linestyle=':')
 
@@ -201,18 +202,19 @@ def plot_length_distribution(df):
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    len_distr = np.array(df.length)
+    len_distr = np.array(df.length)-0.025
     hist, bin_edges = np.histogram(len_distr, 40)
     bin_edges = bin_edges[1:]
     peaks, _ = find_peaks(hist)
 
     ax.plot(bin_edges, hist, color="red", lw=2, label="Sequence length")
-    ax.set_xlim((30, max(df.length)+1))
+    ax.set_xlim((min(df.length)-1, max(df.length)+1))
     ax.set_ylim(bottom=0)
     ax.set_xlabel("Sequence length (bp)", fontsize="16")
     ax.tick_params(axis='y', labelcolor="black")
-    ax.xaxis.set_minor_locator(AutoMinorLocator(4))
-    ax.yaxis.set_minor_locator(AutoMinorLocator(4))
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.xaxis.set_minor_locator(AutoMinorLocator(5))
+    ax.yaxis.set_minor_locator(AutoMinorLocator(5))
     ax.grid(which='major', color='#CCCCCC', linestyle='--')
     ax.grid(which='minor', color='#CCCCCC', linestyle=':')
 
