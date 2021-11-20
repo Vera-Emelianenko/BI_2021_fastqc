@@ -15,7 +15,6 @@ import matplotlib.ticker as plticker
 from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MultipleLocator)
 import seaborn as sns
 from time import time
-from scipy.signal import find_peaks as find_peaks
 
 
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
@@ -202,11 +201,14 @@ def plot_length_distribution(df):
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    m1 = 30
-    m2 = max(df.length)
+    len_distr = np.array(df.length)
+    hist, bin_edges = np.histogram(len_distr, 40)
+    bin_edges = bin_edges[1:]
+    peaks, _ = find_peaks(hist)
 
-    ax.hist(df.length, bins=np.arange(m1, m2+1)-0.5, rwidth=0.5, color="red", lw=2, label="Sequence length")
-    ax.set_xlim((m1, m2+1))
+    ax.plot(bin_edges, hist, color="red", lw=2, label="Sequence length")
+    ax.set_xlim((30, max(df.length)+1))
+    ax.set_ylim(bottom=0)
     ax.set_xlabel("Sequence length (bp)", fontsize="16")
     ax.tick_params(axis='y', labelcolor="black")
     ax.xaxis.set_minor_locator(AutoMinorLocator(4))
