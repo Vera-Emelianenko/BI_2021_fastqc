@@ -14,6 +14,7 @@ import matplotlib.ticker as plticker
 from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MultipleLocator)
 import seaborn as sns
 from time import time
+from scipy.signal import find_peaks as find_peaks
 
 
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
