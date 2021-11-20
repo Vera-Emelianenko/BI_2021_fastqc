@@ -477,10 +477,10 @@ def print_end_time(start_time):
     print(f'''Analysis completed for {args.input} in {hours} hours {minutes}
           minutes {seconds} seconds. Results written to "{args.outdir}/"''')
 
-def print_base_statistics(df, filename, output_dir):
+def print_base_statistics(df, input_file, output_dir):
 
     '''writes down a .tsv file with basic statistics'''
-
+    filename = os.path.basename(input_file)
     average_gc_content = str(round(df.gc_content.mean(), 1))
     min_length = str(df.length.min())
     max_length = str(df.length.max())
