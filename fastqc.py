@@ -32,8 +32,8 @@ def fastq_to_dataframe(filename):
 
     temp_list = []
     for fastq_read in fastq_parser:
-        temp_list.append([fastq_read.id, str(fastq_read.seq)])
-    df = pd.DataFrame(temp_list, columns=["id", "seq"])
+        temp_list.append(str(fastq_read.seq))
+    df = pd.DataFrame(temp_list, columns=["seq"])
     df["length"] = df.seq.str.len()
 
     def gc_content(seq):
@@ -81,7 +81,8 @@ def plot_gc_content(df):
     ax.legend(loc=2, bbox_to_anchor=(0.69, 1.0))
     ax2.legend(loc=2, bbox_to_anchor=(0.69, 0.95))
 
-    fig.savefig(os.path.join(args.outdir, "per_sequence_gc_content.png"), format='png', dpi=600)
+    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_per_sequence_gc_content.png"),
+                format='png', dpi=300)
 
 
 def base_content(df):
@@ -145,7 +146,8 @@ def plot_sequence_content(df):
     ax.set_xlabel('Position in read (bp)')
     ax.set_title("Sequence content across all bases", size=20)
 
-    fig.savefig(os.path.join(args.outdir, "per_base_sequence_content.png"), format='png', dpi=600)
+    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_per_base_sequence_content.png"),
+                format='png', dpi=300)
 
 
 def plot_n_content(df):
@@ -171,8 +173,35 @@ def plot_n_content(df):
     ax.set_xlabel('Position in read (bp)')
     ax.set_title("N content across all bases", size=20)
 
-    fig.savefig(os.path.join(args.outdir, "per_base_n_content.png"), format='png', dpi=600)
+    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_per_base_n_content.png"),
+                format='png', dpi=300)
 
+
+def plot_length_distribution(df):
+
+    fig, ax = plt.subplots(figsize=(15, 10))
+
+    plt.rcParams['font.size'] = '16'
+    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+        label.set_fontsize(16)
+
+    m1 = min(df.length)
+    m2 = max(df.length)
+
+    ax.hist(df.length, bins=np.arange(m1, m2+1)-0.5, rwidth=0.5, color="red", lw=2, label="Sequence length")
+    ax.set_xlim((m1, m2+1))
+    ax.set_xlabel("Sequence length (bp)", fontsize="16")
+    ax.tick_params(axis='y', labelcolor="black")
+    ax.xaxis.set_minor_locator(AutoMinorLocator(4))
+    ax.yaxis.set_minor_locator(AutoMinorLocator(4))
+    ax.grid(which='major', color='#CCCCCC', linestyle='--')
+    ax.grid(which='minor', color='#CCCCCC', linestyle=':')
+
+    ax.set_title("Distribution of sequence lengths over all sequences", size=20)
+    ax.legend(loc=2)
+
+    fig.savefig(os.path.join(args.outdir, os.path.splitext(args.input)[0] + "_seq_length_distribution.png"),
+                format='png', dpi=300)
 
 def main():
     start_time = time()
@@ -180,6 +209,7 @@ def main():
     plot_gc_content(df)
     plot_sequence_content(df)
     plot_n_content(df)
+    plot_length_distribution(df)
     end_time = time()
     seconds_elapsed = end_time - start_time
     hours, rest = divmod(seconds_elapsed, 3600)
