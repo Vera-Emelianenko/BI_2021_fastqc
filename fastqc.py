@@ -10,9 +10,7 @@ import numpy as np
 from scipy.signal import find_peaks as find_peaks
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import matplotlib.ticker as plticker
-from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MultipleLocator)
+from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MaxNLocator)
 import seaborn as sns
 from time import time
 
