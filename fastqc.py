@@ -466,6 +466,14 @@ def fastq_overseq(input_file):
                 format='png', dpi=300)
     fig_2
 
+def print_end_time(start_time):
+    end_time = time()
+    seconds_elapsed = end_time - start_time
+    hours, rest = divmod(seconds_elapsed, 3600)
+    minutes, seconds = divmod(rest, 60)
+    print(f'''Analysis complete for {args.input} in {hours} hours {minutes}
+          minutes {seconds} seconds. Results written to "{args.outdir}/"''')
+
 def main():
     start_time = time()
     df = fastq_to_dataframe(args.input)
@@ -485,12 +493,6 @@ def main():
     except IndexError:
         print('No tile info provided in fastq file, unable to generate per tile plot')
     fastq_overseq(args.input)
-
-    end_time = time()
-    seconds_elapsed = end_time - start_time
-    hours, rest = divmod(seconds_elapsed, 3600)
-    minutes, seconds = divmod(rest, 60)
-    print(f'''Analysis complete for {args.input} in {hours} hours {minutes}
-          minutes {seconds} seconds. Results written to "{args.outdir}/"''')
+    print_end_time(start_time)
 
 main()
