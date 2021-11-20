@@ -421,7 +421,7 @@ def fastq_overseq(input_file):
         trunc_seq.append(t_seq)
     dic_trunc_seq = collections.Counter(trunc_seq)
 
-    with open(args.outdir + 'Overrepresented_sequences.tsv', 'w',
+    with open(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + '_overrepresented_sequences.tsv'), 'w',
               newline='') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
         tsv_writer.writerow(['Sequence', 'Count', 'Percentage'])
