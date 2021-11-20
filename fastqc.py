@@ -255,7 +255,6 @@ def get_mean_quality(input_fastq_list):
 
 # Number of quality per read (mean) values occurences is calculated, put to data frame and plotted
 def per_sequence_quality_score(input_fastq_list):
-    import math
     mpl.rcParams.update(mpl.rcParamsDefault)
     qualities = get_mean_quality(input_fastq_list)
     df = pd.DataFrame({"quality": qualities}, columns=["quality"])
