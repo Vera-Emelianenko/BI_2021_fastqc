@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 from Bio import SeqIO
 import pandas as pd
@@ -23,19 +24,21 @@ parser.add_argument("-o", "--outdir",
 parser.add_argument("-i", "--input", help="Reads data in fastq format")
 args, unknown = parser.parse_known_args()
 
+def check_path(input_path, output_path): 
+    
+    if not os.path.exists(input_path):
+        sys.exit("Input file not found")
+    elif not os.path.exists(output_path):
+        sys.exit("Output directory not found")
 
 def fastq_to_dataframe(filename):
 
     # check if extension is right, then parse the file
-
     ext = os.path.splitext(filename)[1]
     if ext == '.fastq':
         fastq_parser = SeqIO.parse(open(filename, "r"), "fastq")
     else:
-        return("The programm takes only fastq files! Try again.")
-
-    # create a temporary list with lists of two elements: id and sequence
-    # then create a dataframe and add the column "length"
+        sys.exit("The programm takes only .fastq files! Try again")
 
     temp_list = []
     for fastq_read in fastq_parser:
@@ -476,6 +479,7 @@ def print_end_time(start_time):
 
 def main():
     start_time = time()
+    check_path(args.input, args.outdir)
     df = fastq_to_dataframe(args.input)
     plot_gc_content(df)
     plot_sequence_content(df)
