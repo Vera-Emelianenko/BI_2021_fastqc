@@ -257,15 +257,14 @@ def get_mean_quality(input_fastq_list):
 def per_sequence_quality_score(input_fastq_list):
     mpl.rcParams.update(mpl.rcParamsDefault)
     qualities = get_mean_quality(input_fastq_list)
-    df = pd.DataFrame({"quality": qualities}, columns=["quality"])
-    quality_counts = pd.DataFrame(df["quality"].value_counts().sort_index(), columns=["quality"])
-    fg, ax = plt.subplots()
-    ax.plot(quality_counts, label="Average quality per read")
-    ax.xaxis.set_major_locator(AutoLocator())
-    ax.yaxis.set_major_locator(AutoLocator())
+    qual_array = np.array(qualities)
+    hist, bin_edges = np.histogram(qual_array, 10)
+    bin_edges = bin_edges[1:]
+    plt.plot(bin_edges, hist, lw=2, label="Average quality per read")
     plt.title('Quality score distribution over all sequences')
     plt.xlabel("Quality")
     plt.legend(loc='upper right')
+    plt.show()
     
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_sequence_quality_score.png"),
                 format='png', dpi=300)
