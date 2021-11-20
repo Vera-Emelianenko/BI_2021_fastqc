@@ -344,12 +344,12 @@ def base_quality_per_tile(input_fastq_list):
 # Per tile quality is plotted as heatmap
 def per_tile_quality(input_fastq_list):
     mpl.rcParams.update(mpl.rcParamsDefault)
-    df = pd.DataFrame.from_dict(base_quality_per_tile(input_fastq_list), orient='index')
-    df = df.set_axis([i for i in range(1, len(df.columns)+1)], axis='columns')
-    df = df.reindex(index=df.index[::-1])
-    per_tile_plot = sns.heatmap(df, cmap="RdBu")
-    per_tile_plot.xaxis.set_major_locator(AutoLocator())
-    per_tile_plot.set(title='Quality per tile', xlabel='Position in read (bp)', ylabel='Tile')
+    qual_array = np.array(list(base_quality_per_tile(input_fastq_list).values()))
+    plt.imshow(qual_array, cmap='hot', interpolation='nearest')
+    plt.title('Quality per tile')
+    plt.xlabel("Position in read (bp)")
+    plt.ylabel("Tile")
+    plt.show()
     
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_tile_quality.png"),
                 format='png', dpi=300)
