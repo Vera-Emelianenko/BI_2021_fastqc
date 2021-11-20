@@ -6,7 +6,7 @@ import math
 import collections
 import csv
 import numpy as np
-import numpy as np
+from scipy.signal import find_peaks as find_peaks
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
