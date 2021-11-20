@@ -272,16 +272,6 @@ def per_sequence_quality_score(input_fastq_list):
                 format='png', dpi=300)
 
 
-# Per base quality is extracted, put to list with lists for each read position (bases)
-def get_quality_base(input_fastq_list):
-    input = get_seq_quality(input_fastq_list)
-    bases = [[] for j in range(0, len(input[1]))]
-    for i in range(0, len(input)):
-        for j in range(0, len(input[1])):
-            bases[j].append(input[i][j])
-    return(bases)
-
-
 # Per base quality is extracted and put to long-format column dictionary (bases_one_col)
 def get_quality_base_one_col(input_fastq_list):
     input = get_seq_quality(input_fastq_list)
