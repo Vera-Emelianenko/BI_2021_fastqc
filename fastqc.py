@@ -306,7 +306,6 @@ def per_base_sequence_quality(input_fastq_list):
     # Areas of background color are defined depending on y axis values
     per_base_plot.axhspan(0, 20, color='#EF9A9A', alpha=0.4)
     per_base_plot.axhspan(20, 28, color=(0.9, 1, 0.5, 1), alpha=0.4)
-    per_base_plot.axhspan(28, 34, color='#388E3C', alpha=0.4)
     per_base_plot.axhspan(28, 40, color='#388E3C', alpha=0.4)
 
     per_base_plot.set(title='Quality scores across all bases (Illumina>v1.3 encoding)', xlabel='Position in read (bp)')
@@ -314,7 +313,6 @@ def per_base_sequence_quality(input_fastq_list):
     ax.set_xlabel('Position in read (bp)', fontsize=16)
     ax.set_ylabel('Quality', fontsize=16)
     per_base_plot.xaxis.set_major_locator(AutoLocator())
-    per_base_plot.get_legend().remove()
 
     plt.plot(qual_mean)
     plt.ylim(0, 40)
