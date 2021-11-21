@@ -534,6 +534,7 @@ def main():
     per_base_sequence_quality(fastq_list)
     try:
         get_tile(fastq_list)
+        plt.close("all")
         per_tile_quality(fastq_list)
     except IndexError:
         print('No tile info provided in fastq file, unable to generate per tile plot')
