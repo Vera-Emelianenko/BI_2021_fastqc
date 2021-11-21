@@ -5,7 +5,7 @@ This is python project for python course in [Bioinnformatics Institute](https://
 ## Contributors
 
 - Alexandra Kolodyazhnaya [@alvlako](https://github.com/alvlako) wrote functions to plot per sequence, per base and per tile quality score.
-- Anastasiia Rusanova [@rusanovaA](https://github.com/rusanovaA) wrote functions to generate duplication levels plot and overrepresented adapter content table.
+- Anastasiia Rusanova [@rusanovaA](https://github.com/rusanovaA) wrote functions to plot duplication levels and adapter content and to generate overrepresented sequences table.
 - Anna Kapitonova [@anna-kapitonova](https://github.com/anna-kapitonova) wrote arguments parsing, main function, functions to plot GC content, sequence length distribution, per base sequence quality and per sequence GC content
 - Vera Emelianenko [@Vera-Emelianenko](https://github.com/Vera-Emelianenko) wrote function for calculating basic statistics, tested and prettified the code (printing time, checking filepaths), wrote README. 
 
