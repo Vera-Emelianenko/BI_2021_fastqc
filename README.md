@@ -1,6 +1,6 @@
 # BI_2021_fastqc
 
-This is python project for python course in [Bioinnformatics Institute](https://bioinf.me/en). The fastqc.py is a script for sequencing reads quality control. It provides the similar metrics and graphs as the widely used FastQC tool from Babraham Institute, in particular: ефиду ща basic statistics (number of reads, average length), table of overrepresented sequences, plots of adapter content, per base n content, per base sequence content, per base sequence quality, per sequence quality score, sequence length distribution, per sequence GC content and sequence duplication levels. The program assumes quality encoding to be in Sanger/Illumina>1.3 (phred33) format. 
+This is python project for python course in [Bioinnformatics Institute](https://bioinf.me/en). The fastqc.py is a script for sequencing reads quality control. The goal of the project was to reproduce metrics from the original widely used [FastQC tool from Babraham Institute](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) (Andrews, 2010). Our script fastqc.py provides the similar metrics and graphs, in particular: basic statistics (number of reads, average length), table of overrepresented sequences, plots of adapter content, per base n content, per base sequence content, per base sequence quality, per sequence quality score, sequence length distribution, per sequence GC content and sequence duplication levels. The program assumes quality encoding to be in Sanger/Illumina>1.3 (phred33) format. 
 
 ## Contributors
 
@@ -11,7 +11,9 @@ This is python project for python course in [Bioinnformatics Institute](https://
 
 ## Installation
 
-The installation process does not rely on distinct OS features and can be applied for Windows, Linux and Mac systems. The script is supposed to be run from bash-like command line. To use it on Windows, please install Windows Subsystem for Linux (WSL) (this [user guide](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10) can help you). Then you can run the commands in the WSL command line. The script is written and tested in Python3.8, and the installation process assumes you have python3 on your mashine. You can check the current version of python using `python --version`. To install or update Python, visit https://www.python.org/downloads/.
+The installation process does not rely on distinct OS features and can be applied for Windows, Linux and Mac systems. The script is supposed to be run from bash-like command line. To use it on Windows, please install Windows Subsystem for Linux (WSL) (this [user guide](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10) can help you). Then you can run the commands in the WSL command line. The script is written and tested in Python3.8, and the installation process assumes you have python3 on your mashine. You can check the current version of python using `python --version`. To install or update Python, visit [www.python.org](https://www.python.org/downloads/).
+
+#### OS requirements
 
 #### Downloading
 You can download the archive with fastqc.py and test data using wget:
@@ -85,3 +87,13 @@ python fastqc.py -i input_file_dir/input_file.fq -o output_file_dir
     
 `-o <output_dir>` (or `--outdir <output_dir>`)
     Specify the output directory. The current directory is default `"./"`.
+
+## References 
+
+All the metrics were reproduces from the original FastQC program: 
+
+Andrews, S. FastQC:  A Quality Control Tool for High Throughput Sequence Data [Online]. (2010) Available online at: [http://www.bioinformatics.babraham.ac.uk/projects/fastqc/](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+
+First test data (test.fastq) is a subset of publicly available [SRR292678 Illumina reads](https://www.ncbi.nlm.nih.gov/sra/?term=SRR292678) (Escherichia coli O104:H4 str. TY-2482 Genome sequencing and assembly). 
+
+Second test data (test2.fastq) is taken from the public [testdata repository](https://github.com/hartwigmedical/testdata), in particular from [cancerPanel folder, CPCT12345678R_AHHKYHDSXX_S13_L001_R2_001.fastq](https://github.com/hartwigmedical/testdata/blob/master/cancerPanel/CPCT12345678R/CPCT12345678R_AHHKYHDSXX_S13_L001_R2_001.fastq.gz)
