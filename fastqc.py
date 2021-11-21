@@ -316,7 +316,7 @@ def per_base_sequence_quality(input_fastq_list):
 
     plt.plot(qual_mean)
     plt.ylim(0, 40)
-    plt.xlim(0, 40)
+    # plt.xlim(0, 40)
 
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_quality.png"),
                 format='png', dpi=300)

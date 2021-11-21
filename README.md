@@ -166,6 +166,14 @@ A tab-separated table that shows Sequence, Count anf Percentage for all the sequ
 | TAACAAACAAACAAGTTTTCTCTTTTTAACAATTACCACATTCTGCGCTT | 2     | 6.451612903225806 |
 | CCGCGCCCCGGCCCGGTGCAGCACCACCAGCGTGTCCAGGAAGCCCTCCC | 2     | 6.451612903225806 |
 
+## Working time 
+
+| Data             | Number of reads | Read length | Time to complete analysis |
+|------------------|-----------------|-------------|---------------------------|
+| test2            | 31              | 151         | 9,4 sec                   |
+| SRR1705851.fastq | 358265          | 147.1       | 4 min 52.9 sec            |
+
+
 ## References 
 
 All the metrics were reproduces from the original FastQC program: 
