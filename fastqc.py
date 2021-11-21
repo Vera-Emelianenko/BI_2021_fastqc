@@ -14,7 +14,7 @@ from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MaxNLocator)
 import seaborn as sns
 from time import time
 import dominate
-from dominate.tags import *
+from dominate.tags import h1, div, h2, table, tr, td, img, tbody
 
 if len(sys.argv) == 1:
     sys.exit("No arguments provided. Print python fastqc.py -h to see help message")
@@ -518,7 +518,8 @@ def print_base_statistics(df, input_file, output_dir):
             tsv_writer.writerow([keys, values])
     return None
 
-def write_html(input,output_path):
+
+def write_html(input, output_path):
     filename = os.path.basename(input)[:-6]
     doc = dominate.document(title=f'{filename} fastqc.py report')
 
@@ -528,25 +529,25 @@ def write_html(input,output_path):
         d = div(style='margin-left:50px')
         with d:
             with table(border="1", width="750").add(tbody()):
-                with open (os.path.join(output_path, filename + '_basic_statistics.tsv'), 'r') as base_stat: 
+                with open(os.path.join(output_path, filename + '_basic_statistics.tsv'), 'r') as base_stat:
                     for line in base_stat:
-                        l = tr()
+                        table_line = tr()
                         for element in line.split('\t'):
-                            l += td(element)
+                            table_line += td(element)
         ims = [file for file in os.listdir(output_path) if filename in file and '.png' in file]
 
         for path in ims:
-            div(img(src = path, width = "800"))
+            div(img(src=path, width="800"))
 
-        div(h2('Overrepresented sequences'), style = 'margin-left:50px')
+        div(h2('Overrepresented sequences'), style='margin-left:50px')
         d2 = div(style = 'margin-left:50px')
         with d2:
-            with table(border = "1").add(tbody()):
-                with open (os.path.join(output_path, filename + '_overrepresented_sequences.tsv'), 'r') as overrep: 
+            with table(border="1").add(tbody()):
+                with open(os.path.join(output_path, filename + '_overrepresented_sequences.tsv'), 'r') as overrep:
                     for line in overrep:
-                        l = tr()
+                        table2_line = tr()
                         for element in line.split('\t'):
-                            l += td(element)
+                            table2_line += td(element)
 
 
     
