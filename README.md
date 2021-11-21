@@ -15,8 +15,9 @@ The installation process does not rely on distinct OS features and can be applie
 
 #### OS requirements
 
-The script was tested in WSL1 Ubuntu-20.04 in Windows Terminal 1.11.2921.0 in Microsoft Windows [Version 10.0.19043.1288] (Windows 10 Home Version 21H1), python 3.8.5, with the following dependencies: biopython 1.79, pandas 1.3.4, numpy 1.21.4, matplotlib 3.4.3, seaborn 0.11.2, scipy 1.7.2. 
-The script was tested in Ubuntu 18.04.2 LTS in Microsoft Windows [10.0.19043] (Windows 10 Home Version), python 3.6.9, with the following dependencies: biopython 1.78, pandas 1.1.5, numpy 1.19.5, matplotlib 3.3.4, seaborn 0.11.2, scipy 1.5.4. 
+The script was tested in WSL1 Ubuntu-20.04 in Windows Terminal 1.11.2921.0 in Microsoft Windows [Version 10.0.19043.1288] (Windows 10 Home Version 21H1), python 3.8.5, with the following dependencies: biopython 1.79, pandas 1.3.4, numpy 1.21.4, matplotlib 3.4.3, seaborn 0.11.2, scipy 1.7.2.
+
+The script was tested in Ubuntu 18.04.2 LTS in Microsoft Windows [10.0.19043] (Windows 10 Home Version), python 3.6.9, with the following dependencies: biopython 1.78, pandas 1.1.5, numpy 1.19.5, matplotlib 3.3.4, seaborn 0.11.2, scipy 1.5.4.
 
 #### Downloading
 You can download the archive with fastqc.py and test data using wget:
@@ -93,7 +94,77 @@ python fastqc.py -i input_file_dir/input_file.fq -o output_file_dir
 
 ## Output files
 
+All the output files will be prefixed by the name of the analysed file. 
+
+#### basic_statistics.tsv
+
+A tab-separated table that shows filename, number of sequences, sequence length range and average GC content. 
+
+| Measure               | Value       |
+|-----------------------|-------------|
+| Filename              | test2.fastq |
+| Total Sequences       | 31          |
+| Mean sequence length  | 151.0       |
+| Sequence length range | 151         |
+| Average GC-content, % | 56.8        |
+
+#### per_base_sequence_quality
+
+Shows sequence quality across all bases. Assumes Sanger (phred33) encoding. 
+
+![per base sequence quality](test_data/test2_per_base_sequence_quality.png)
+
+#### per_tile_quality
+
+Shows sequence quality per tile. Not generated if no tile information is provided. Assumes Sanger (phred33) encoding. 
+
+![per_tile_quality](test_data/test2_per_tile_quality.png)
+
+#### per_sequence_quality_score
+
+Shows distribution of quality per sequence. 
+![per_sequence_quality_scores](test_data/test2_per_sequence_quality_scores.png)
+
+#### per_base_sequence_content
+
+Shows sequence content per base. 
+![per_base_sequence_content](test_data/test2_per_base_sequence_content.png)
+
+#### per_base_n_content
+
+Shows n content per base. 
+![per_base_n_content](test_data/test2_per_base_n_content.png)
+
+#### per_sequence_gc_content
+
+Shows GC content across all sequences. 
+![per_sequence_gc_content](test_data/test2_per_sequence_gc_content.png)
+
+#### seq_length_distribution
+
+Shows how sequence lengths are distributed. 
+![seq_length_distribution](test_data/test2_seq_length_distribution.png)
+
+#### sequence_duplication_levels
+
+Shows total and deduplicated sequences. 
+![sequence_duplication_levels](test_data/test2_sequence_duplication_levels.png)
+
+#### adapter_content
+Shows per position adapter content
 ![adapter content](test_data/test2_adapter_content.png)
+
+#### overrepresented_sequences
+
+A tab-separated table that shows Sequence, Count anf Percentage for all the sequences that are more frequent than 0.1% and occure more than 1 time. 
+
+| Sequence                                           | Count | Percentage        |
+|----------------------------------------------------|-------|-------------------|
+| GCCTGAAACTCGCGCCGCGAGGAGAGGGCGGGGCCGCGGAAAGGAAGGGG | 2     | 6.451612903225806 |
+| TGAACACAAAATACTTTAAACAATTTAGAATAAAATATGAAACACTGTTT | 2     | 6.451612903225806 |
+| TCTGTGCTGGAAAATGAATGCTCTGAGCTTTGGAAGCTCTCAGGGTACAA | 2     | 6.451612903225806 |
+| TAACAAACAAACAAGTTTTCTCTTTTTAACAATTACCACATTCTGCGCTT | 2     | 6.451612903225806 |
+| CCGCGCCCCGGCCCGGTGCAGCACCACCAGCGTGTCCAGGAAGCCCTCCC | 2     | 6.451612903225806 |
 
 ## References 
 
