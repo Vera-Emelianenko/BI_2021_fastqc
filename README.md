@@ -6,12 +6,12 @@ This is python project for python course in [Bioinnformatics Institute](https://
 
 - Alexandra Kolodyazhnaya [@alvlako](https://github.com/alvlako) wrote functions to plot per sequence, per base and per tile quality score.
 - Anastasiia Rusanova [@rusanovaA](https://github.com/rusanovaA) wrote functions to plot duplication levels and adapter content and to generate overrepresented sequences table.
-- Anna Kapitonova [@anna-kapitonova](https://github.com/anna-kapitonova) wrote arguments parsing, main function, functions to plot GC content, sequence length distribution, per base sequence quality and per sequence GC content
+- Anna Kapitonova [@anna-kapitonova](https://github.com/anna-kapitonova) wrote arguments parsing, main function, functions to plot GC content, sequence length distribution, per base sequence quality and per sequence GC content.
 - Vera Emelianenko [@Vera-Emelianenko](https://github.com/Vera-Emelianenko) wrote function for calculating basic statistics, tested and prettified the code (printing time, checking filepaths), wrote README. 
 
 ## Installation
 
-The installation process does not rely on distinct OS features and can be applied for Windows, Linux and Mac systems. The script is supposed to be run from bash-like command line. To use it on Windows, please install Windows Subsystem for Linux (WSL) (this [user guide](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10) can help you). Then you can run the commands in the WSL command line. The script is written and tested in Python3.8, and the installation process assumes you have python3 on your mashine. You can check the current version of python using `python --version`. To install or update Python, visit [www.python.org](https://www.python.org/downloads/).
+The installation process does not rely on distinct OS features and can be applied for Windows, Linux and Mac systems. The script is supposed to be run from bash-like command line. To use it on Windows, please install Windows Subsystem for Linux (WSL) (this [user guide](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10) can help you). Then you can run the commands in the WSL command line. The script is written and tested in Python 3.8, Python 3.7 and Python 3.6, and the installation process assumes you have python3 on your mashine. You can check the current version of python using `python --version`. To install or update Python, visit [www.python.org](https://www.python.org/downloads/).
 
 #### OS requirements
 
