@@ -101,6 +101,7 @@ def plot_gc_content(df):
 
     fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_sequence_gc_content.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 def base_content(df):
@@ -166,6 +167,7 @@ def plot_sequence_content(df):
 
     fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_content.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 def plot_n_content(df):
@@ -193,6 +195,7 @@ def plot_n_content(df):
 
     fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_n_content.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 def plot_length_distribution(df):
@@ -224,6 +227,7 @@ def plot_length_distribution(df):
 
     fig.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_seq_length_distribution.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 # creating small internal test
@@ -267,10 +271,10 @@ def per_sequence_quality_score(input_fastq_list):
     plt.title('Quality score distribution over all sequences')
     plt.xlabel("Quality")
     plt.legend(loc='upper right')
-    plt.show()
 
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_sequence_quality_score.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 # Per base quality is extracted and put to long-format column dictionary (bases_one_col)
@@ -316,10 +320,10 @@ def per_base_sequence_quality(input_fastq_list):
 
     plt.plot(qual_mean)
     plt.ylim(0, 40)
-    # plt.xlim(0, 40)
 
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_quality.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 # The tile id is extracted as 5th column in 1st line for each fastq entry
@@ -359,10 +363,10 @@ def per_tile_quality(input_fastq_list):
     plt.title('Quality per tile')
     plt.xlabel("Position in read (bp)")
     plt.ylabel("Tile")
-    plt.show()
 
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_tile_quality.png"),
                 format='png', dpi=300)
+    plt.close("all")
 
 
 def fastq_overseq(input_file):
@@ -416,9 +420,9 @@ def fastq_overseq(input_file):
     plt.title('Percent of seqs remaining if deduplicated ' +
               str(round(uniq_seq / float(total_seq) * 100, 2)) + ' %')
     plt.legend()
-    plt.show()
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_sequence_duplication_levels.png"),
                 format='png', dpi=300)
+    plt.close("all")
     fig_1
 
     ######
@@ -471,9 +475,9 @@ def fastq_overseq(input_file):
     plt.grid(linewidth=0.5)
     plt.title('% Adapter')
     plt.legend()
-    plt.show()
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + '_adapter_content.png'),
                 format='png', dpi=300)
+    plt.close("all")
     fig_2
 
 
