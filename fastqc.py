@@ -292,18 +292,16 @@ def per_base_sequence_quality(input_fastq_list):
     df = np.array(list(get_quality_base_one_col(input_fastq_list).values()))
     df = np.transpose(df)
     df = df[df[:, 0].argsort()]
-    df2 = list(np.split(df[:,1], np.unique(df[:, 0], return_index=True)[1][1:]))
+    df2 = list(np.split(df[:, 1], np.unique(df[:, 0], return_index=True)[1][1:]))
     qual_mean = []
     for x in range(len(df2)):
         qual_mean.append(np.mean(df2[x]))
-    per_base_plot = sns.boxplot(x="position", y="quality", data=df, hue="position", showfliers=False, width=80)
-
     sns.set_style("whitegrid")
     fig, ax = plt.subplots(figsize=(15, 10))
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    per_base_plot = sns.boxplot(x = df[:, 0],  y = df[:, 1], showfliers=False,
+    per_base_plot = sns.boxplot(x=df[:, 0],  y=df[:, 1], showfliers=False,
                                 width=0.5, color='yellow', ax=ax)
     # Areas of background color are defined depending on y axis values
     per_base_plot.axhspan(0, 20, color='#EF9A9A', alpha=0.4)
@@ -324,6 +322,7 @@ def per_base_sequence_quality(input_fastq_list):
 
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_quality.png"),
                 format='png', dpi=300)
+
 
 # The tile id is extracted as 5th column in 1st line for each fastq entry
 def get_tile(input_fastq_list):
