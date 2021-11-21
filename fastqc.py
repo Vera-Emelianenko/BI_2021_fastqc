@@ -532,7 +532,9 @@ def main():
     with open(args.input) as input_fastq:
         fastq_list = input_fastq.read().splitlines()
     get_seq_quality(fastq_list)
+    plt.close("all")
     per_sequence_quality_score(fastq_list)
+    plt.close("all")
     per_base_sequence_quality(fastq_list)
     try:
         get_tile(fastq_list)
