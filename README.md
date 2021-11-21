@@ -15,9 +15,11 @@ The installation process does not rely on distinct OS features and can be applie
 
 #### OS requirements
 
-The script was tested in WSL1 Ubuntu-20.04 in Windows Terminal 1.11.2921.0 in Microsoft Windows [Version 10.0.19043.1288] (Windows 10 Home Version 21H1), python 3.8.5, with the following dependencies: biopython 1.79, pandas 1.3.4, numpy 1.21.4, matplotlib 3.4.3, seaborn 0.11.2, scipy 1.7.2.
+The script was tested in WSL1 Ubuntu-20.04 in Windows Terminal 1.11.2921.0 in Microsoft Windows [Version 10.0.19043.1288] (Windows 10 Home Version 21H1), Python 3.8.5, with the following dependencies: biopython 1.79, pandas 1.3.4, numpy 1.21.4, matplotlib 3.4.3, seaborn 0.11.2, scipy 1.7.2.
 
-The script was tested in Ubuntu 18.04.2 LTS in Microsoft Windows [10.0.19043] (Windows 10 Home Version), python 3.6.9, with the following dependencies: biopython 1.78, pandas 1.1.5, numpy 1.19.5, matplotlib 3.3.4, seaborn 0.11.2, scipy 1.5.4.
+The script was tested in Ubuntu 18.04.2 LTS in Microsoft Windows [10.0.19043] (Windows 10 Home Version), Python 3.6.9, with the following dependencies: biopython 1.78, pandas 1.1.5, numpy 1.19.5, matplotlib 3.3.4, seaborn 0.11.2, scipy 1.5.4.
+
+The script was tested in macOS Big Sur 11.6.1, Python 3.9.7, with the following dependencies: biopython 1.79, pandas 1.3.4, numpy 1.21.4, matplotlib 3.4.3, seaborn 0.11.2, scipy 1.7.2.
 
 #### Downloading
 You can download the archive with fastqc.py and test data using wget:
