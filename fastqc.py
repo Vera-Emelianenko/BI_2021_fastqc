@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MaxNLocator)
 import seaborn as sns
 from time import time
+import dominate
+from dominate.tags import *
 
 if len(sys.argv) == 1:
     sys.exit("No arguments provided. Print python fastqc.py -h to see help message")
@@ -516,6 +518,43 @@ def print_base_statistics(df, input_file, output_dir):
             tsv_writer.writerow([keys, values])
     return None
 
+def write_html(input,output_path):
+    filename = os.path.basename(input)[:-6]
+    doc = dominate.document(title=f'{filename} fastqc.py report')
+
+    with doc:
+        h1(f'Report of fastqc.py for {filename}.fastq', align='center')
+        div(h2('Basic statistics'), style='margin-left:50px')
+        d = div(style='margin-left:50px')
+        with d:
+            with table(border="1", width="750").add(tbody()):
+                with open (os.path.join(output_path, filename + '_basic_statistics.tsv'), 'r') as base_stat: 
+                    for line in base_stat:
+                        l = tr()
+                        for element in line.split('\t'):
+                            l += td(element)
+        ims = [file for file in os.listdir(output_path) if filename in file and '.png' in file]
+
+        for path in ims:
+            div(img(src = path, width = "800"))
+
+        div(h2('Overrepresented sequences'), style = 'margin-left:50px')
+        d2 = div(style = 'margin-left:50px')
+        with d2:
+            with table(border = "1").add(tbody()):
+                with open (os.path.join(output_path, filename + '_overrepresented_sequences.tsv'), 'r') as overrep: 
+                    for line in overrep:
+                        l = tr()
+                        for element in line.split('\t'):
+                            l += td(element)
+
+
+    
+    html_doc = str(doc)
+    with open (os.path.join(output_path, os.path.basename(input)[:-6] + '_report.html'), 'w') as output: 
+        output.write(html_doc)
+
+
 
 def main():
     start_time = time()
@@ -545,6 +584,7 @@ def main():
     print('Calculating overrepresented sequences...')
     fastq_overseq(args.input)
     print_base_statistics(df, args.input, args.outdir)
+    write_html(args.input, args.outdir)
     print_end_time(start_time)
 
 
