@@ -123,7 +123,7 @@ Shows sequence quality per tile. Not generated if no tile information is provide
 #### per_sequence_quality_score
 
 Shows distribution of quality per sequence. 
-![per_sequence_quality_scores](test_data/test2_per_sequence_quality_scores.png)
+![per_sequence_quality_score](test_data/test2_per_sequence_quality_score.png)
 
 #### per_base_sequence_content
 
