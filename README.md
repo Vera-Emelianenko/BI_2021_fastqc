@@ -92,7 +92,7 @@ python fastqc.py -i input_file_dir/input_file.fq -o output_file_dir
 
 ## Output files
 
-[a relative link](Vera-Emelianenko/BI_2021_fastqc/tree/main/test_data/test2_adapter_content.png)
+![adapter content](test_data/test2_adapter_content.png)
 
 ## References 
 
