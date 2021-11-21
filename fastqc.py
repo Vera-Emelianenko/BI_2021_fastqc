@@ -28,6 +28,8 @@ def check_path(input_path, output_path):
         sys.exit("Input file not found")
     elif not os.path.exists(output_path):
         sys.exit("Output directory not found")
+    else:
+        print(f'Started analysis of {args.input}')
 
 
 def fastq_to_dataframe(filename):
@@ -308,7 +310,7 @@ def per_base_sequence_quality(input_fastq_list):
 
     plt.plot(qual_mean["quality"])
     plt.ylim(0, 40)
-    
+
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_quality.png"),
                 format='png', dpi=300)
 
@@ -473,8 +475,8 @@ def print_end_time(start_time):
     seconds_elapsed = end_time - start_time
     hours, rest = divmod(seconds_elapsed, 3600)
     minutes, seconds = divmod(rest, 60)
-    print(f'''Analysis completed for {args.input} in {hours} hours {minutes}
-          minutes {seconds} seconds. Results written to {args.outdir}/''')
+    print(f'Analysis completed for {args.input}. Results written to {args.outdir}')
+    print(f'Time: {hours} hours {minutes} minutes {seconds} seconds. ''')
 
 
 def print_base_statistics(df, input_file, output_dir):
@@ -485,9 +487,9 @@ def print_base_statistics(df, input_file, output_dir):
     min_length = str(df.length.min())
     max_length = str(df.length.max())
     mean_length = str(round(df.length.mean(), 1))
-    if max_length==min_length: 
+    if max_length == min_length:
         sequence_length_range = max_length
-    else: 
+    else:
         sequence_length_range = min_length + '-' + max_length
     number_of_sequences = str(len(df))
     basic_statistics_dict = {
@@ -511,11 +513,14 @@ def main():
     start_time = time()
     check_path(args.input, args.outdir)
     df = fastq_to_dataframe(args.input)
+    print('Plotting GC content...')
     plot_gc_content(df)
+    print('Plotting sequence content...')
     plot_sequence_content(df)
     plot_n_content(df)
+    print('Plotting length distribution...')
     plot_length_distribution(df)
-
+    print('Plotting sequence quality...')
     with open(args.input) as input_fastq:
         fastq_list = input_fastq.read().splitlines()
     get_seq_quality(fastq_list)
@@ -526,8 +531,10 @@ def main():
         per_tile_quality(fastq_list)
     except IndexError:
         print('No tile info provided in fastq file, unable to generate per tile plot')
+    print('Calculating overrepresented sequences...')
     fastq_overseq(args.input)
     print_base_statistics(df, args.input, args.outdir)
     print_end_time(start_time)
+
 
 main()
