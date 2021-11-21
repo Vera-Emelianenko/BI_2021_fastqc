@@ -288,37 +288,37 @@ def get_quality_base_one_col(input_fastq_list):
 # Per base quality is plotted, line representing of per base qualities (qual_mean) is plotted
 def per_base_sequence_quality(input_fastq_list):
     mpl.rcParams.update(mpl.rcParamsDefault)
-    df = np.array(list(get_quality_base_one_col(input_fastq_list).values()))
-    df = np.transpose(df)
-    df = df[df[:, 0].argsort()]
-    df2 = list(np.split(df[:, 1], np.unique(df[:, 0], return_index=True)[1][1:]))
-    qual_mean = []
-    for x in range(len(df2)):
-        qual_mean.append(np.mean(df2[x]))
+    df = pd.DataFrame(get_quality_base_one_col(input_fastq_list), columns=["quality", "position"])
+    sns.set_style("whitegrid")
+    qual_mean = pd.DataFrame(df.groupby('position').mean().reset_index(), columns=["quality", "position"])
+    per_base_plot = sns.boxplot(x="position", y="quality", data=df, hue="position", showfliers=False, width=80)
 
     sns.set_style("whitegrid")
     fig, ax = plt.subplots(figsize=(15, 10))
     for label in (ax.get_xticklabels() + ax.get_yticklabels()):
         label.set_fontsize(16)
 
-    per_base_plot = sns.boxplot(x=df[:, 0],  y=df[:, 1], showfliers=False,
+    per_base_plot = sns.boxplot(x="position", y="quality", data=df, showfliers=False,
                                 width=0.5, color='yellow', ax=ax)
     # Areas of background color are defined depending on y axis values
     per_base_plot.axhspan(0, 20, color='#EF9A9A', alpha=0.4)
     per_base_plot.axhspan(20, 28, color=(0.9, 1, 0.5, 1), alpha=0.4)
+    per_base_plot.axhspan(28, 34, color='#388E3C', alpha=0.4)
     per_base_plot.axhspan(28, 40, color='#388E3C', alpha=0.4)
 
+    per_base_plot.set(title='Quality scores across all bases (Illumina>v1.3 encoding)', xlabel='Position in read (bp)')
     ax.set_title('Quality scores across all bases (Illumina>v1.3 encoding)', size=20)
     ax.set_xlabel('Position in read (bp)', fontsize=16)
     ax.set_ylabel('Quality', fontsize=16)
     per_base_plot.xaxis.set_major_locator(AutoLocator())
+    per_base_plot.get_legend().remove()
 
-    plt.plot(qual_mean)
+    plt.plot(qual_mean["quality"])
     plt.ylim(0, 40)
+    plt.xlim(0, 40)
 
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_base_sequence_quality.png"),
                 format='png', dpi=300)
-
 
 # The tile id is extracted as 5th column in 1st line for each fastq entry
 def get_tile(input_fastq_list):
