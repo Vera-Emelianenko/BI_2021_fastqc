@@ -540,7 +540,7 @@ def write_html(input, output_path):
             div(img(src=path, width="800"))
 
         div(h2('Overrepresented sequences'), style='margin-left:50px')
-        d2 = div(style = 'margin-left:50px')
+        d2 = div(style='margin-left:50px')
         with d2:
             with table(border="1").add(tbody()):
                 with open(os.path.join(output_path, filename + '_overrepresented_sequences.tsv'), 'r') as overrep:
@@ -549,12 +549,9 @@ def write_html(input, output_path):
                         for element in line.split('\t'):
                             table2_line += td(element)
 
-
-    
     html_doc = str(doc)
-    with open (os.path.join(output_path, os.path.basename(input)[:-6] + '_report.html'), 'w') as output: 
+    with open(os.path.join(output_path, os.path.basename(input)[:-6] + '_report.html'), 'w') as output:
         output.write(html_doc)
-
 
 
 def main():
