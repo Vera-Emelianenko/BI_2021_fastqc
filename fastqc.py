@@ -487,6 +487,7 @@ def print_end_time(start_time):
 def print_base_statistics(df, input_file, output_dir):
 
     '''writes down a .tsv file with basic statistics'''
+
     filename = os.path.basename(input_file)
     average_gc_content = str(round(df.gc_content.mean(), 1))
     min_length = str(df.length.min())
