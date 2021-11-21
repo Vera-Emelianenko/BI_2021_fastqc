@@ -15,6 +15,8 @@ The installation process does not rely on distinct OS features and can be applie
 
 #### OS requirements
 
+The script was tested in WSL1 Ubuntu-20.04 in Windows Terminal 1.11.2921.0 in Microsoft Windows [Version 10.0.19043.1288] (Windows 10 Home Version 21H1), python 3.8.5, with the following dependencies: biopython 1.79, pandas 1.3.4, numpy 1.21.4, matplotlib 3.4.3, seaborn 0.11.2, scipy 1.7.2. 
+
 #### Downloading
 You can download the archive with fastqc.py and test data using wget:
 
@@ -87,6 +89,10 @@ python fastqc.py -i input_file_dir/input_file.fq -o output_file_dir
     
 `-o <output_dir>` (or `--outdir <output_dir>`)
     Specify the output directory. The current directory is default `"./"`.
+
+## Output files
+
+[a relative link](Vera-Emelianenko/BI_2021_fastqc/tree/main/test_data/test2_adapter_content.png)
 
 ## References 
 
