@@ -14,7 +14,7 @@ from matplotlib.ticker import (AutoLocator, AutoMinorLocator, MaxNLocator)
 import seaborn as sns
 from time import time
 
-if len(sys.argv) == 1: 
+if len(sys.argv) == 1:
     sys.exit("No arguments provided. Print python fastqc.py -h to see help message")
 parser = argparse.ArgumentParser(description="FastQC analog as a homework project")
 parser.add_argument("-o", "--outdir",
@@ -22,11 +22,13 @@ parser.add_argument("-o", "--outdir",
 parser.add_argument("-i", "--input", help="Reads data in fastq format")
 args, unknown = parser.parse_known_args()
 
-def check_path(input_path, output_path): 
+
+def check_path(input_path, output_path):
     if not os.path.exists(input_path):
         sys.exit("Input file not found")
     elif not os.path.exists(output_path):
         sys.exit("Output directory not found")
+
 
 def fastq_to_dataframe(filename):
 
@@ -191,7 +193,6 @@ def plot_n_content(df):
                 format='png', dpi=300)
 
 
-
 def plot_length_distribution(df):
 
     fig, ax = plt.subplots(figsize=(15, 10))
@@ -265,7 +266,7 @@ def per_sequence_quality_score(input_fastq_list):
     plt.xlabel("Quality")
     plt.legend(loc='upper right')
     plt.show()
-    
+
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_sequence_quality_score.png"),
                 format='png', dpi=300)
 
@@ -350,7 +351,7 @@ def per_tile_quality(input_fastq_list):
     plt.xlabel("Position in read (bp)")
     plt.ylabel("Tile")
     plt.show()
-    
+
     plt.savefig(os.path.join(args.outdir, os.path.basename(args.input)[:-6] + "_per_tile_quality.png"),
                 format='png', dpi=300)
 
@@ -466,6 +467,7 @@ def fastq_overseq(input_file):
                 format='png', dpi=300)
     fig_2
 
+
 def print_end_time(start_time):
     end_time = time()
     seconds_elapsed = end_time - start_time
@@ -474,6 +476,7 @@ def print_end_time(start_time):
     print(f'''Analysis completed for {args.input} in {hours} hours {minutes}
           minutes {seconds} seconds. Results written to {args.outdir}/''')
 
+
 def print_base_statistics(df, input_file, output_dir):
 
     '''writes down a .tsv file with basic statistics'''
@@ -481,18 +484,18 @@ def print_base_statistics(df, input_file, output_dir):
     average_gc_content = str(round(df.gc_content.mean(), 1))
     min_length = str(df.length.min())
     max_length = str(df.length.max())
-    mean_length = str(round(df.length.mean(),1))
+    mean_length = str(round(df.length.mean(), 1))
     if max_length==min_length: 
         sequence_length_range = max_length
     else: 
         sequence_length_range = min_length + '-' + max_length
     number_of_sequences = str(len(df))
     basic_statistics_dict = {
-        'Filename':filename,
-        'Total Sequences':number_of_sequences, 
-        'Mean sequence length':mean_length,
-        'Sequence length range':sequence_length_range,
-        'Average GC-content, %':average_gc_content
+        'Filename': filename,
+        'Total Sequences': number_of_sequences,
+        'Mean sequence length': mean_length,
+        'Sequence length range': sequence_length_range,
+        'Average GC-content, %': average_gc_content
     }
 
     with open(os.path.join(output_dir, os.path.basename(filename)[:-6] + '_basic_statistics.tsv'), 'w',
@@ -502,7 +505,7 @@ def print_base_statistics(df, input_file, output_dir):
         for keys, values in basic_statistics_dict.items():
             tsv_writer.writerow([keys, values])
     return None
-    
+
 
 def main():
     start_time = time()
