@@ -166,6 +166,10 @@ A tab-separated table that shows Sequence, Count anf Percentage for all the sequ
 | TAACAAACAAACAAGTTTTCTCTTTTTAACAATTACCACATTCTGCGCTT | 2     | 6.451612903225806 |
 | CCGCGCCCCGGCCCGGTGCAGCACCACCAGCGTGTCCAGGAAGCCCTCCC | 2     | 6.451612903225806 |
 
+#### report_html
+
+Simple report in html format, uses all the png pictures in the output directory that have input file as prefix.
+
 ## Working time 
 
 | Data             | Number of reads | Read length | Time to complete analysis |
